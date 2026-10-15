@@ -13,7 +13,7 @@
                  avancer cette date puis redéployer.
 
    Pour basculer manuellement : changer SITE_OFFLINE puis
-   `npx next build && vercel deploy --prod --yes`
+   pousser sur main (build GitHub Actions, déploiement o2switch automatique)
    ============================================================ */
 
 export const SITE_OFFLINE = false;

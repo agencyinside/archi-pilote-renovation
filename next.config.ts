@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  // Hébergement o2switch (Passenger) : serveur autonome, construit par GitHub Actions.
+  output: "standalone",
   turbopack: {
     root: __dirname,
   },

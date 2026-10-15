@@ -1,4 +1,22 @@
-# Publication du site — comment ça marche réellement
+# Publication du site - comment ça marche réellement
+
+> **Octobre 2026 : migration Vercel → o2switch.** Le dépôt de référence devient
+> `github.com/agencyinside/archi-pilote-renovation` (historique complet repris de
+> `yabouridasannier-cmyk/archi-pilote-renovation`). L'hébergement passe sur un
+> compte o2switch (application Node.js « Setup Node.js App », Passenger).
+>
+> Chaîne de publication cible :
+> 1. push sur `main` → workflow **Build o2switch** (`.github/workflows/build-o2switch.yml`) :
+>    build Next.js `standalone`, paquet publié dans la release GitHub `prod-latest` ;
+> 2. sur le serveur, une tâche cron (`~/bin/o2switch-deploy.sh`, toutes les 2 min)
+>    récupère le paquet, le met en place dans `~/apps/archi`, redémarre l'application,
+>    contrôle le site et revient à la version précédente en cas d'échec ;
+> 3. la synchro Sedestral pousse avec le secret `DEPLOY_PUSH_TOKEN` (un push fait avec
+>    le jeton par défaut ne déclencherait pas le build).
+>
+> La synchro Sedestral est **désactivée** sur ce dépôt jusqu'à la bascule DNS : elle
+> ne doit tourner que dans un seul dépôt à la fois. Les sections ci-dessous décrivent
+> l'ancien fonctionnement Vercel et restent valables jusqu'à la bascule.
 
 Ce document décrit le chemin exact d'une modification jusqu'au visiteur. Il
 existe parce que ce chemin n'est **pas** celui qu'on suppose par défaut sur un

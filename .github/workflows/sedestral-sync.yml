@@ -29,6 +29,9 @@ jobs:
       - uses: actions/checkout@v4
         with:
           ref: main
+          # Jeton personnel : un push fait avec le GITHUB_TOKEN par défaut ne déclencherait
+          # pas le workflow « Build o2switch », et l'article ne serait jamais mis en ligne.
+          token: ${{ secrets.DEPLOY_PUSH_TOKEN }}
 
       - uses: actions/setup-node@v4
         with:
