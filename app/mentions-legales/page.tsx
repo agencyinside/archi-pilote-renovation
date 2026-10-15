@@ -55,9 +55,9 @@ export default function MentionsLegalesPage() {
           <div className="flex flex-col gap-2">
             <h2 className="display text-xl text-ivoire normal-case">Hébergement</h2>
             <p>
-              Ce site est hébergé par Vercel Inc., 340 S Lemon Ave #4133, Walnut, CA 91789,
-              États-Unis —{" "}
-              <a href="https://vercel.com" target="_blank" rel="noreferrer" className="text-orange hover:underline">vercel.com</a>.
+              Ce site est hébergé par o2switch SAS, 222-224 boulevard Gustave Flaubert,
+              63000 Clermont-Ferrand, France -{" "}
+              <a href="https://www.o2switch.fr" target="_blank" rel="noreferrer" className="text-orange hover:underline">o2switch.fr</a>.
             </p>
           </div>
 

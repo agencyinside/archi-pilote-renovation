@@ -63,10 +63,9 @@ export default function PolitiqueConfidentialitePage() {
               commerciales ou publicitaires.
             </p>
             <p>
-              Le site est hébergé par Vercel Inc. (États-Unis) ; l&apos;hébergement d&apos;une page web implique un
-              traitement technique minimal des requêtes (adresse IP, journaux serveur) nécessaire au fonctionnement
-              du site, encadré par les clauses contractuelles types de la Commission européenne pour les transferts
-              hors Union européenne.
+              Le site est hébergé par o2switch SAS (Clermont-Ferrand, France) ; l&apos;hébergement d&apos;une page web
+              implique un traitement technique minimal des requêtes (adresse IP, journaux serveur) nécessaire au
+              fonctionnement du site. Ces données sont hébergées en France.
             </p>
             {/* 05/09 : SOUS-TRAITANT DU FORMULAIRE DÉCLARÉ. Il manquait, et c'était un vrai
                 manquement : app/api/contact/route.ts transmet l'INTÉGRALITÉ du formulaire —

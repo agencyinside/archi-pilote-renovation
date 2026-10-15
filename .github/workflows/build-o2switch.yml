@@ -1,0 +1,65 @@
+# .github/workflows/build-o2switch.yml
+# A deposer a l'identique dans les deux depots.
+#
+# A chaque push sur main : build Next.js en mode "standalone", puis publication
+# du paquet dans une release GitHub fixe nommee "prod-latest".
+# Le serveur o2switch vient lui-meme chercher ce paquet (script o2switch-deploy.sh
+# lance par une tache cron) : aucune connexion SSH entrante n'est necessaire,
+# ce qui contourne la liste blanche d'IP SSH d'o2switch (limitee a 5 IP, alors
+# que les IP des runners GitHub changent a chaque execution).
+
+name: Build o2switch
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: build-o2switch
+  cancel-in-progress: true # seul le dernier commit compte
+
+permissions:
+  contents: write # creation / mise a jour de la release prod-latest
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Meme version MAJEURE que celle choisie dans cPanel > Setup Node.js App
+          node-version: "24"
+          cache: npm
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - name: Assembler le paquet standalone
+        run: |
+          set -e
+          test -f .next/standalone/server.js || { echo "::error::output: 'standalone' absent de next.config.ts"; exit 1; }
+          cp -r public .next/standalone/public
+          mkdir -p .next/standalone/.next
+          cp -r .next/static .next/standalone/.next/static
+          echo "${GITHUB_SHA}" > .next/standalone/REVISION
+          tar -C .next/standalone -czf app.tar.gz .
+          echo "${GITHUB_SHA}" > sha.txt
+          ls -lh app.tar.gz
+
+      - name: Publier dans la release prod-latest
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -e
+          gh release view prod-latest >/dev/null 2>&1 || \
+            gh release create prod-latest --title "Production o2switch" \
+              --notes "Paquet de production recupere par le serveur o2switch. Ne pas supprimer." --latest=false
+          # L'archive d'abord, le sha ensuite : le serveur ne bascule qu'en voyant un nouveau sha,
+          # l'archive correspondante est donc toujours deja en ligne.
+          gh release upload prod-latest app.tar.gz --clobber
+          gh release upload prod-latest sha.txt --clobber

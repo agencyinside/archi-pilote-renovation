@@ -8,7 +8,7 @@
         et des images du corps dans public/uploads/sedestral/<slug>/,
         réécriture des URLs sedestral.com → URLs internes, écriture
         dans content/blog/generated.json
-     3. commit + push  →  déploiement Vercel
+     3. commit + push  →  build GitHub Actions, déploiement o2switch
      4. attente de la mise en ligne réelle (HTTP 200 sur l'URL finale)
      5. PATCH /alya/blog-articles/{id}  { state: PUBLISHED, url }
         — jamais avant l'étape 4.
