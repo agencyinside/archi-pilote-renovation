@@ -1,4 +1,47 @@
 {
   "version": 1,
-  "articles": {}
+  "articles": {
+    "d152c864-422f-4563-a3a3-2482a65457ee": {
+      "slug": "changer-fenetres",
+      "url": "https://www.archipiloterenovation.com/blog/changer-fenetres",
+      "importedAt": "2026-10-16T14:11:41.028Z",
+      "confirmedAt": "2026-10-16T14:11:41.028Z"
+    },
+    "c404057d-2404-4517-99ed-94a450444abb": {
+      "slug": "ma-prime-adapt",
+      "url": "https://www.archipiloterenovation.com/blog/ma-prime-adapt",
+      "importedAt": "2026-10-16T14:11:42.659Z",
+      "confirmedAt": "2026-10-16T14:11:42.659Z"
+    },
+    "76d76000-97f3-485d-b4a0-13e77b1e572c": {
+      "slug": "entreprise-de-renovation",
+      "url": "https://www.archipiloterenovation.com/blog/entreprise-de-renovation",
+      "importedAt": "2026-10-16T14:11:43.790Z",
+      "confirmedAt": "2026-10-16T14:11:43.790Z"
+    },
+    "810f0982-ff1b-4ed6-827e-16d89978404c": {
+      "slug": "prix-fenetre-double-vitrage",
+      "url": "https://www.archipiloterenovation.com/blog/prix-fenetre-double-vitrage",
+      "importedAt": "2026-10-16T14:11:45.208Z",
+      "confirmedAt": "2026-10-16T14:11:45.208Z"
+    },
+    "e806afe8-3849-4935-a237-6e645c52d76b": {
+      "slug": "installation-de-menuiseries-exterieures",
+      "url": "https://www.archipiloterenovation.com/blog/installation-de-menuiseries-exterieures",
+      "importedAt": "2026-10-16T14:11:46.261Z",
+      "confirmedAt": "2026-10-16T14:11:46.261Z"
+    },
+    "b2e04b45-8669-4589-b77e-9b036a11609f": {
+      "slug": "renovation-appartement-paris",
+      "url": "https://www.archipiloterenovation.com/blog/renovation-appartement-paris",
+      "importedAt": "2026-10-16T14:11:47.779Z",
+      "confirmedAt": "2026-10-16T14:11:47.779Z"
+    },
+    "30f72b69-7f2c-4ee0-8c81-410808920ce2": {
+      "slug": "entreprise-renovation-interieur",
+      "url": "https://www.archipiloterenovation.com/blog/entreprise-renovation-interieur",
+      "importedAt": "2026-10-16T14:11:49.254Z",
+      "confirmedAt": "2026-10-16T14:11:49.254Z"
+    }
+  }
 }
