@@ -44,9 +44,25 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
     publisher: { "@id": "https://www.archipiloterenovation.com/#organization" },
   };
 
+  /* FAQ fournie par WhatsWrong : déjà affichée en fin de corps, déclarée ici pour les moteurs. */
+  const jsonLdFaq = article.faq?.length
+    ? {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: article.faq.map((q) => ({
+          "@type": "Question",
+          name: q.question,
+          acceptedAnswer: { "@type": "Answer", text: q.answer },
+        })),
+      }
+    : null;
+
   return (
     <main className="relative z-10 bg-carbone">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBlogPosting) }} />
+      {jsonLdFaq && (
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdFaq) }} />
+      )}
       <header className="relative pt-40 md:pt-48 pb-14 overflow-hidden">
         <div className="container-site relative flex flex-col items-center text-center gap-5">
           <Reveal variant="fade-blur">
@@ -81,7 +97,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ slug: 
       <article className="container-site pb-20 md:pb-28">
         <div className="max-w-[42rem] mx-auto flex flex-col gap-6">
           {article.bodyHtml ? (
-            /* Article importé depuis Sedestral : corps HTML assaini à la synchronisation. */
+            /* Article importé depuis Sedestral ou WhatsWrong : corps HTML assaini à la synchronisation. */
             <Reveal variant="slide-up">
               <div className="prose-article" dangerouslySetInnerHTML={{ __html: article.bodyHtml }} />
             </Reveal>
