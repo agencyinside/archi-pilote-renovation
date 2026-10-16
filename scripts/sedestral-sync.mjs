@@ -51,6 +51,7 @@ const DEFAULT_CATEGORY = process.env.SEDESTRAL_DEFAULT_CATEGORY ?? "Rénovation"
 const GENERATED_FILE = path.join(ROOT, "content/blog/generated.json");
 const STATE_FILE = path.join(ROOT, "content/blog/_sedestral-state.json");
 const EDITORIAL_FILE = path.join(ROOT, "app/data.ts");
+const WHATSWRONG_FILE = path.join(ROOT, "content/blog/whatswrong.json");
 const UPLOAD_DIR = path.join(ROOT, "public/uploads/sedestral");
 const UPLOAD_PUBLIC = "/uploads/sedestral";
 
@@ -287,11 +288,14 @@ async function commitAndPush(message) {
   if (NO_PUSH) { log(`(push désactivé) commit prévu : ${message}`); return false; }
   await git("config", "user.name", "sedestral-sync[bot]");
   await git("config", "user.email", "sedestral-sync@users.noreply.github.com");
-  await git("add", "content/blog", "public/uploads/sedestral");
+  await git("add", "content/blog/generated.json", "content/blog/_sedestral-state.json", "public/uploads/sedestral");
   const staged = await git("diff", "--cached", "--name-only");
   if (!staged) { log("rien à commiter"); return false; }
   await git("commit", "-m", message);
-  await git("push");
+  // main a pu avancer pendant le run (synchro WhatsWrong, autre commit) : on se replace dessus.
+  // Les deux synchros n'écrivent jamais les mêmes fichiers, le rebase ne peut pas entrer en conflit.
+  await git("pull", "--rebase", "origin", "main");
+  await git("push", "origin", "HEAD:main");
   log(`poussé : ${message}`);
   return true;
 }
@@ -349,7 +353,9 @@ async function main() {
 
   const state = await readJson(STATE_FILE, { version: 1, articles: {} });
   const generated = await readJson(GENERATED_FILE, []);
-  const taken = new Set([...(await editorialSlugs()), ...generated.map((a) => a.slug)]);
+  // Les slugs des articles WhatsWrong sont aussi réservés : les deux sources partagent /blog/<slug>.
+  const whatswrongSlugs = (await readJson(WHATSWRONG_FILE, [])).map((a) => a.slug);
+  const taken = new Set([...(await editorialSlugs()), ...whatswrongSlugs, ...generated.map((a) => a.slug)]);
 
   /* --- Phase 1 : import --- */
   const nouveaux = [];

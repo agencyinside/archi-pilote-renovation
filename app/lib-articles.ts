@@ -7,6 +7,9 @@
    · content/blog/generated.json — articles importés depuis Sedestral
      par scripts/sedestral-sync.mjs, corps en HTML assaini,
      `photo` = chemin interne /uploads/sedestral/<slug>/cover.*
+   · content/blog/whatswrong.json — articles importés depuis WhatsWrong
+     par scripts/whatswrong-sync.mjs, même format, FAQ en plus,
+     `photo` = chemin interne /uploads/whatswrong/<slug>/…
 
    Le fichier JSON est importé statiquement : tout est figé au build,
    aucune lecture de disque au runtime (compatible export statique Vercel).
@@ -15,9 +18,13 @@
 import { ARTICLES, type Article } from "./data";
 import { PHOTOS } from "./lib-photos";
 import generatedRaw from "../content/blog/generated.json";
+import whatswrongRaw from "../content/blog/whatswrong.json";
+
+export type FaqItem = { question: string; answer: string };
 
 export type GeneratedArticle = {
-  sedestralId: string;
+  sedestralId?: string;
+  wwId?: string;
   slug: string;
   titre: string;
   date: string;
@@ -27,17 +34,24 @@ export type GeneratedArticle = {
   photo: string;
   keyword?: string;
   bodyHtml: string;
+  faq?: FaqItem[];
 };
 
 export type BlogArticle = Article & {
-  /** Corps HTML — présent uniquement sur les articles venus de Sedestral. */
+  /** Corps HTML — présent uniquement sur les articles venus de Sedestral ou WhatsWrong. */
   bodyHtml?: string;
-  /** Mot-clé principal transmis par Sedestral. */
+  /** Mot-clé principal transmis par Sedestral ou WhatsWrong. */
   keyword?: string;
   sedestralId?: string;
+  wwId?: string;
+  /** Questions / réponses en texte brut (WhatsWrong) : schéma FAQPage. */
+  faq?: FaqItem[];
 };
 
-const generated: BlogArticle[] = (generatedRaw as unknown as GeneratedArticle[]).map((a) => ({
+const generated: BlogArticle[] = [
+  ...(generatedRaw as unknown as GeneratedArticle[]),
+  ...(whatswrongRaw as unknown as GeneratedArticle[]),
+].map((a) => ({
   ...a,
   corps: [],
 }));
@@ -49,7 +63,7 @@ export const ALL_ARTICLES: BlogArticle[] = [...ARTICLES, ...generated].sort((a, 
 
 /**
  * Résout une référence d'image : clé du catalogue PHOTOS pour les articles
- * éditoriaux, chemin interne ou URL absolue pour les articles Sedestral.
+ * éditoriaux, chemin interne ou URL absolue pour les articles Sedestral et WhatsWrong.
  */
 export function photoSrc(ref: string | undefined): string {
   if (!ref) return "";
