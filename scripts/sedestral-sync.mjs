@@ -43,7 +43,7 @@ const API_KEY = process.env.SEDESTRAL_API_KEY;
 /* Origine publique du site : sert à construire l'URL renvoyée à Sedestral
    et à vérifier la mise en ligne. Surchargée par la variable d'environnement
    SITE_ORIGIN (définie dans le workflow). */
-const SITE_ORIGIN = (process.env.SITE_ORIGIN ?? "https://www.archipiloterenovation.com").replace(/\/$/, "");
+const SITE_ORIGIN = (process.env.SITE_ORIGIN || "https://www.archipiloterenovation.com").replace(/\/$/, "");
 
 const BLOG_PREFIX = "/blog"; // structure d'URL existante : /blog/<slug>
 const DEFAULT_CATEGORY = process.env.SEDESTRAL_DEFAULT_CATEGORY ?? "Rénovation";
